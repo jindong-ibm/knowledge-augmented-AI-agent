@@ -1,0 +1,91 @@
+[
+  {
+    "name": "John",
+    "address": "abc",
+    "email": "john@ibm.com",
+    "role": "employee",
+    "is_manager": false,
+    "has_manager": "Peter",
+    "entity_type": "Ontology:Employee"
+  },
+  {
+    "name": "Peter",
+    "address": "def",
+    "email": "peter@ibm.com",
+    "role": "manager",
+    "is_manager": true,
+    "manager_of": "John",
+    "entity_type": "Ontology:Employee"
+  },
+  {
+    "name": "Linda",
+    "address": "xyz",
+    "email": "annie@ibm.com",
+    "role": "hr",
+    "is_manager": false,
+    "entity_type": "Ontology:Employee"
+  },
+  {
+    "name": "Performance Doc",
+    "owner": ["John"],
+    "reviewer": ["Peter", "Linda"],
+    "entity_type": "Ontology:HR_Documentation"
+  },
+  {
+    "name": "Submit Promption",
+    "labels": ["employee promption"],
+    "owner": "manager",
+    "include_docs": true,
+    "docs": ["Performance Doc"],
+    "orchestrate_skill": {
+      "name": "My skill 1",
+      "specs": "{json formated string}"
+    },
+    "next_steps": ["Review Promption"],
+    "entity_type": "Workflow:Task"
+  },
+  {
+    "name": "Review Promption",
+    "owner": "hr",
+    "include_doc": true,
+    "docs": ["Performance Doc"],
+    "rpc": {
+      "rpc_type": "REST API",
+      "url": "abc.com/rest",
+      "specs": "{json formated string}"
+    },
+    "next_steps": ["Approval"],
+    "entity_type": "Workflow:Task"
+  }, 
+  {
+    "name": "Approval",
+    "next_steps": {
+      "yes": ["Prompt Employee"],
+      "no": ["Reject Request"]
+    },
+    "entity_type": "Workflow:Condition"
+  },
+  {
+    "name": "Prompt Employee",
+    "owner": "hr",
+    "include_docs": false,
+    "orchestrate_skill": {
+      "name": "my skill 2",
+      "specs": "{json formated string}"
+    },
+    "next_steps": ["Notify Employee"],
+    "entity_type": "Workflow:Task"
+  },  
+  {
+    "name": "Reject Request",
+    "owner": "hr",
+    "include_doc": false,
+    "rpc": {
+      "rpc_type": "REST API",
+      "url": "abc.com/rest",
+      "specs": "{json formated string}"
+    },
+    "next_steps": ["Notify Employee"],
+    "entity_type": "Workflow:Task"
+  }
+]
