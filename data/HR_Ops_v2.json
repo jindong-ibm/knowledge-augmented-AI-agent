@@ -1,0 +1,90 @@
+[ 
+  "Ontologies": [
+    {
+      "name": "John",
+      "address": "abc",
+      "email": "john@ibm.com",
+      "role": "employee",
+      "is_manager": false,
+      "has_manager": "Peter",
+    },
+    {
+      "name": "Peter",
+      "address": "def",
+      "email": "peter@ibm.com",
+      "role": "manager",
+      "is_manager": true,
+    },
+    {
+      "name": "Linda",
+      "address": "xyz",
+      "email": "annie@ibm.com",
+      "role": "hr",
+      "is_manager": false,
+    },
+    {
+      "name": "Performance Doc",
+      "owner": "employee",
+      "reviewer": "manager",
+      "entity_type": "Ontology:HR_Documentation"
+    },
+  ],
+  "Tasks": [
+    {
+      "name": "Submit Promption",
+      "owner": "manager",
+      "include_docs": true,
+      "docs": ["Performance Doc"],
+      "orchestrate_skill": "",
+      "orchestrate_skill_specs": [],
+      "rpc_type": "REST API",
+      "rpc_url": "",
+      "rpc_specs": {},
+      "next_steps": ["Review Promption"],
+    },
+    {
+      "name": "Review Promption",
+      "owner": "hr",
+      "include_doc": true,
+      "docs": ["Performance Doc"],
+      "orchestrate_skill": "",
+      "orchestrate_skill_specs": [],
+      "rpc_type": "REST API",
+      "rpc_url": "",
+      "rpc_specs": {},
+      "next_steps": ["Approval"],
+    },
+    {
+      "name": "Prompt Employee",
+      "owner": "hr",
+      "include_docs": false,
+      "orchestrate_skill": "",
+      "orchestrate_skill_specs": [],
+      "rpc_type": "REST API",
+      "rpc_url": "",
+      "rpc_specs": {},
+      "next_steps": ["Notify Employee"],
+    },  
+    {
+      "name": "Reject Request",
+      "owner": "hr",
+      "include_doc": false,
+      "docs": [],
+      "orchestrate_skill": "",
+      "orchestrate_skill_specs": [],
+      "rpc_type": "REST API",
+      "rpc_url": "",
+      "rpc_specs": {}
+    },
+  ],
+  "Conditions": [ 
+    {
+      "name": "Approval",
+      "next_steps": {
+        "yes": ["Prompt Employee"],
+        "no": ["Reject Request"]
+      },
+      "entity_type": "Workflow:Condition"
+    },
+  ],
+]
